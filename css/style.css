@@ -365,6 +365,7 @@ h5,
 
 /* Navbar */
 .site-navbar {
+  background: #fff;
   margin-bottom: 0px;
   z-index: 1999;
   position: absolute;
@@ -407,7 +408,8 @@ h5,
 }
 .site-navbar .site-navigation .site-menu > li > a {
   padding: 10px 0px;
-  color: #fff;
+  color: #4d4d4d;
+  /* color: #fff; */
   text-decoration: none !important;
 }
 .site-navbar .site-navigation .site-menu > li > a:hover {
@@ -1893,4 +1895,9 @@ h5,
 .custom-pagination span {
   background: #e6e6e6;
   color: #000;
+}
+
+.brand-logo img {
+  width: 100%;
+  max-width: 132px;
 }
