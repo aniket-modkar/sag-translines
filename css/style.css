@@ -25,6 +25,10 @@ a:hover {
   text-decoration: none;
 }
 
+.c-pointer {
+  cursor: pointer;
+}
+
 h1,
 h2,
 h3,
