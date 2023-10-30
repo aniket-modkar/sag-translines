@@ -134,7 +134,7 @@
           <div class="col-md-4">
             <div class="free-quote bg-dark h-100">
               <h2 class="my-4 heading text-center">Get Free Quote</h2>
-              <form method="post">
+              <form id="quoteForm">
                 <div class="form-group">
                   <label for="fq_name">Name</label>
                   <input
@@ -799,5 +799,69 @@ We move your goods from point A to point B. Fast, reliable, and affordable. Cont
     <script src="js/aos.js"></script>
 
     <script src="js/main.js"></script>
+
+    
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const contactForm = document.getElementById("quoteForm");
+
+    contactForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        // Get form data
+        const formData = new FormData(contactForm);
+        
+        // Convert form data to a plain object
+        const formObject = {};
+        formObject.to = "trade@sagtranslines.in";
+        // formObject.to = ["aniketmodker24@gmail.com"];
+        formObject.subject = "New Inquiry on Website";
+        formObject.body = `Name: ${formData.get('fq_name')} 
+        Email: ${formData.get('fq_email')}
+        Subject: Get Free Quote`;
+       
+        if (!formData.get('fq_name') || !formData.get('fq_email')) { 
+          alert("Fill all values");
+          return
+        } 
+
+        fetch('https://apis.technomize.com/api/v1/notification/sendEmail', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formObject),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Form submission successful:", data);
+            contactForm.reset();
+            alert("We have received your request. Our team will contact you soon.")
+            // You can redirect to a thank you page or show a success message here.
+        })
+        .catch(error => {
+            console.error("Error submitting form:", error);
+            alert("Something went wrong -" + error)
+            // Handle errors (e.g., show an error message to the user).
+        });
+        // Simulate a POST request to an endpoint (replace with your actual endpoint)
+    });
+
+    function isFormValid(formObject) {
+        // Check if all form fields have data
+        for (const key in formObject) {
+            if (formObject.hasOwnProperty(key)) {
+                if (!formObject[key]) {
+                    return false; // Form field is empty
+                }
+            }
+        }
+        return true; // All form fields have data
+    }
+
+});
+
+  </script>
+
   </body>
 </html>

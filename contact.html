@@ -115,17 +115,17 @@
 
             
 
-            <form action="#" class="p-5 bg-white">
+            <form id="contactForm" class="p-5 bg-white">
              
 
               <div class="row form-group">
                 <div class="col-md-6 mb-3 mb-md-0">
                   <label class="text-black" for="fname">First Name</label>
-                  <input type="text" id="fname" class="form-control">
+                  <input type="text" id="fname" name="fname" class="form-control">
                 </div>
                 <div class="col-md-6">
                   <label class="text-black" for="lname">Last Name</label>
-                  <input type="text" id="lname" class="form-control">
+                  <input type="text" id="lname" name="lname" class="form-control">
                 </div>
               </div>
 
@@ -133,7 +133,7 @@
                 
                 <div class="col-md-12">
                   <label class="text-black" for="email">Email</label> 
-                  <input type="email" id="email" class="form-control">
+                  <input type="email" id="email" name="email" class="form-control">
                 </div>
               </div>
 
@@ -141,7 +141,7 @@
                 
                 <div class="col-md-12">
                   <label class="text-black" for="subject">Subject</label> 
-                  <input type="subject" id="subject" class="form-control">
+                  <input type="subject" id="subject" name="subject" class="form-control">
                 </div>
               </div>
 
@@ -383,6 +383,69 @@
   <script src="js/aos.js"></script>
 
   <script src="js/main.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const contactForm = document.getElementById("contactForm");
+
+    contactForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        // Get form data
+        const formData = new FormData(contactForm);
+        
+        // Convert form data to a plain object
+        const formObject = {};
+        formObject.to = "trade@sagtranslines.in";
+        // formObject.to = ["aniketmodker24@gmail.com"];
+        formObject.subject = "New Inquiry on Website";
+        formObject.body = `Name: ${formData.get('fname')} ${formData.get('lname')} 
+        Email: ${formData.get('email')}
+        Subject: ${formData.get('subject')}
+        Message : ${formData.get('message')}`;
+       
+        if (!formData.get('fname') || !formData.get('lname') || !formData.get('email') || !formData.get('subject') || !formData.get('message')) { 
+          alert("Fill all values");
+          return
+        } 
+
+        fetch('https://apis.technomize.com/api/v1/notification/sendEmail', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formObject),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Form submission successful:", data);
+            contactForm.reset();
+            alert("We have received your request. Our team will contact you soon.")
+            // You can redirect to a thank you page or show a success message here.
+        })
+        .catch(error => {
+            console.error("Error submitting form:", error);
+            alert("Something went wrong -" + error)
+            // Handle errors (e.g., show an error message to the user).
+        });
+        // Simulate a POST request to an endpoint (replace with your actual endpoint)
+    });
+
+    function isFormValid(formObject) {
+        // Check if all form fields have data
+        for (const key in formObject) {
+            if (formObject.hasOwnProperty(key)) {
+                if (!formObject[key]) {
+                    return false; // Form field is empty
+                }
+            }
+        }
+        return true; // All form fields have data
+    }
+
+});
+
+  </script>
     
   </body>
 </html>
